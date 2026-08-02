@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #1a2e05;
+  --chia-light: #99cc33;
+  --chia: #4d9900;
+  --chia-dark: #2f6b00;
+  --chia-deep: #14532d;
+  --player-vertical-width: 400px;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fadeIn 0.4s ease-out;
+}
+.step-enter {
+  animation: fadeIn 0.35s ease-out;
+}
+
+.progress-fill {
+  transition: width 0.5s ease-in-out;
+}
+
+@keyframes ctaPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 10px 15px -3px rgba(77, 153, 0, 0.35); }
+  50% { transform: scale(1.03); box-shadow: 0 14px 22px -3px rgba(77, 153, 0, 0.5); }
+}
+.cta-pulse {
+  animation: ctaPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes loadingProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+.loading-bar {
+  animation: loadingProgress 4s ease-in-out forwards;
+}
+
+/* ---------- Primary button ---------- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(180deg, #5cb200 0%, #4d9900 100%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.3px;
+  padding: 16px 24px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 18px -4px rgba(77, 153, 0, 0.5);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.2s ease;
+}
+.btn-primary:hover { transform: translateY(-1px); }
+.btn-primary:active { transform: scale(0.98); }
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ---------- Range slider ---------- */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: #e5e7eb;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #4d9900;
+  cursor: pointer;
+  border: 4px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #4d9900;
+  cursor: pointer;
+  border: 4px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}

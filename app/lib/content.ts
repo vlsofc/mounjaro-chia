@@ -1,0 +1,347 @@
+// =============================================================================
+//  Mounjaro de Chía — contenido del funnel (traducido al español)
+//  Estructura fiel al funnel de referencia:
+//    Quiz 1 (5 pasos) -> VSL 1 (video con CTA oculto)
+//    -> Quiz 2 (11 pasos) -> Página final (VSL 2 + 2 planes)
+// =============================================================================
+
+export type Gender = "male" | "female";
+
+// -----------------------------------------------------------------------------
+//  Imágenes (servidas localmente desde /public/images)
+// -----------------------------------------------------------------------------
+export const IMAGES = {
+  body: {
+    regular: { male: "/images/body-regular-BrqfJkDu.webp", female: "/images/Regular.webp" },
+    flacido: { male: "/images/body-flacido-oYhmUAOd.webp", female: "/images/Flacida.webp" },
+    sobrepeso: { male: "/images/body-sobrepeso-gutbcNBO.webp", female: "/images/Sobrepeso.webp" },
+  },
+  fat: {
+    abdomen: { male: "/images/fat-abdomen-new-D6Nw6t9-.webp", female: "/images/fat-abdomen-f-B_P0vzNQ.webp" },
+    pecho: { male: "/images/fat-peito-new-Bx9HWLZ4.webp", female: "/images/fat-peito-f-qCzQMqPh.webp" },
+    flancos: { male: "/images/fat-flancos-N1J9ZlBr.webp", female: "/images/fat-flancos-f-8N-KcZ_L.webp" },
+    brazos: { male: "/images/fat-bracos-new-uh4AGWlu.webp", female: "/images/fat-bracos-f-DWmVKJkl.webp" },
+  },
+};
+
+// -----------------------------------------------------------------------------
+//  Reproductores de video (VTurb / ConverteAI)
+//  TODO: sustituye estos IDs por los de tu propia VSL en español.
+// -----------------------------------------------------------------------------
+export const VIDEO = {
+  account: "a977b5e6-a7d9-43df-9bd2-c815069210f9",
+  vsl1Player: "6a6d87cb1c982c86efa0dfbf",
+  vsl2Player: "6a6ec2c2b6e0b7d03f6871b8",
+};
+
+// Segundos hasta liberar el botón (CTA) oculto sobre cada video.
+//   VSL 1: pitchTime del reproductor = 909 s (15 min 09 s).
+//   VSL 2: este reproductor AÚN NO tiene "pitchTime" configurado en ConverteAI,
+//          por eso no se pudo leer un valor real. Ajusta el número de abajo al
+//          "pitch" que definas para ese video (fallback temporal: 584 s).
+// Pon 0 para liberar el botón al instante durante las pruebas.
+export const CTA_DELAY = {
+  vsl1: 909,
+  vsl2: 584, // TODO: reemplazar por el pitchTime real de la VSL 2
+};
+
+// -----------------------------------------------------------------------------
+//  Enlaces de checkout
+//  ⚠️ IMPORTANTE: reemplaza estos por TUS propios enlaces de pago.
+//  (No se copian los del sitio de referencia para no enviarle tus ventas.)
+// -----------------------------------------------------------------------------
+export const CHECKOUT = {
+  completo: "#", // TODO: tu checkout del Plan Completo
+  premium: "#",  // TODO: tu checkout del Plan Premium
+};
+
+// -----------------------------------------------------------------------------
+//  Tipos de pasos
+// -----------------------------------------------------------------------------
+export interface OptionItem {
+  id: string;
+  label: string;
+  labelMale?: string;   // variación de género (ej. "Flácido")
+  labelFemale?: string; // variación de género (ej. "Flácida")
+  sublabel?: string;
+  emoji?: string;
+  img?: { male: string; female: string };
+}
+
+export type Step =
+  | {
+      kind: "options";
+      group: "q1" | "q2";
+      variant: "emoji" | "image" | "gender";
+      question: string;
+      subtitle?: string;
+      columns: 1 | 2;
+      options: OptionItem[];
+    }
+  | {
+      kind: "slider";
+      group: "q2";
+      question: string;
+      footnote: string;
+      units: {
+        id: string;
+        label: string;
+        min: number;
+        max: number;
+        default: number;
+        step: number;
+        suffix: string;
+      }[];
+    }
+  | {
+      kind: "name";
+      group: "q2";
+      question: string;
+      subtitle: string;
+      placeholder: string;
+      buttonLabel: string;
+    }
+  | {
+      kind: "video";
+      variant: "vsl1" | "final";
+      caption: string;
+      player: string;
+      ctaLabel: string;
+      ctaDelay: number;
+      // solo para la página final:
+      finalHeadline?: string;
+      finalSubtitle?: string;
+      finalFormulaLabel?: string; // "Fórmula personalizada para {name}"
+    };
+
+// -----------------------------------------------------------------------------
+//  FLUJO COMPLETO
+// -----------------------------------------------------------------------------
+export const STEPS: Step[] = [
+  // ===== QUIZ 1 (5 pasos) =====
+  {
+    kind: "options",
+    group: "q1",
+    variant: "emoji",
+    columns: 1,
+    question: "¿Cuántos kilos quieres perder con el Mounjaro de Chía?",
+    options: [
+      { id: "ate5", emoji: "🎯", label: "Hasta 5 kg" },
+      { id: "6a10", emoji: "💪", label: "6 a 10 kg" },
+      { id: "11a15", emoji: "🔥", label: "11 a 15 kg" },
+      { id: "16a20", emoji: "⚡", label: "16 a 20 kg" },
+      { id: "mais20", emoji: "🚀", label: "Más de 20 kg" },
+    ],
+  },
+  {
+    kind: "options",
+    group: "q1",
+    variant: "gender",
+    columns: 2,
+    question: "¿Cuál es tu género?",
+    subtitle:
+      "Esta información nos ayuda a ajustar tu protocolo del Mounjaro de Chía según tu metabolismo.",
+    options: [
+      { id: "male", label: "Hombre", img: { male: IMAGES.body.regular.male, female: IMAGES.body.regular.male } },
+      { id: "female", label: "Mujer", img: { male: IMAGES.body.regular.female, female: IMAGES.body.regular.female } },
+    ],
+  },
+  {
+    kind: "options",
+    group: "q1",
+    variant: "emoji",
+    columns: 1,
+    question: "¿Cuál es tu edad?",
+    options: [
+      { id: "menos25", emoji: "👧", label: "Menos de 25" },
+      { id: "25a34", emoji: "👩", label: "25 a 34" },
+      { id: "35a44", emoji: "👩‍💼", label: "35 a 44" },
+      { id: "45a54", emoji: "🧕", label: "45 a 54" },
+      { id: "55mais", emoji: "👵", label: "55+" },
+    ],
+  },
+  {
+    kind: "options",
+    group: "q1",
+    variant: "image",
+    columns: 1,
+    question: "¿Cómo clasificarías tu cuerpo hoy?",
+    options: [
+      { id: "regular", label: "Regular", sublabel: "Peso normal", img: IMAGES.body.regular },
+      { id: "flacido", labelMale: "Flácido", labelFemale: "Flácida", label: "Flácida", sublabel: "Poca firmeza", img: IMAGES.body.flacido },
+      { id: "sobrepeso", label: "Sobrepeso", sublabel: "Grasa visible", img: IMAGES.body.sobrepeso },
+    ],
+  },
+  {
+    kind: "options",
+    group: "q1",
+    variant: "image",
+    columns: 2,
+    question: "¿En qué zona de tu cuerpo te gustaría reducir más grasa?",
+    options: [
+      { id: "abdomen", label: "Abdomen", img: IMAGES.fat.abdomen },
+      { id: "pecho", label: "Pecho", img: IMAGES.fat.pecho },
+      { id: "flancos", label: "Flancos", img: IMAGES.fat.flancos },
+      { id: "brazos", label: "Brazos", img: IMAGES.fat.brazos },
+    ],
+  },
+
+  // ===== VSL 1 =====
+  {
+    kind: "video",
+    variant: "vsl1",
+    caption: "Mira hasta el final para recibir la receta…",
+    player: VIDEO.vsl1Player,
+    ctaLabel: "PERSONALIZAR MI RECETA",
+    ctaDelay: CTA_DELAY.vsl1,
+  },
+
+  // ===== QUIZ 2 (11 pasos) =====
+  {
+    kind: "slider",
+    group: "q2",
+    question: "¿Cuál es tu peso actual?",
+    footnote: "¡En base a esto, ajustaremos la dosis ideal para los mejores resultados!",
+    units: [
+      { id: "kg", label: "kg", min: 40, max: 250, default: 70, step: 1, suffix: "kg" },
+      { id: "lb", label: "lb", min: 88, max: 550, default: 154, step: 1, suffix: "lb" },
+    ],
+  },
+  {
+    kind: "slider",
+    group: "q2",
+    question: "¿Cuál es tu altura?",
+    footnote: "Usaremos tu altura para calcular tu IMC y personalizar el protocolo.",
+    units: [
+      { id: "cm", label: "cm", min: 140, max: 220, default: 180, step: 1, suffix: "cm" },
+      { id: "pulg", label: "pulg", min: 55, max: 87, default: 71, step: 1, suffix: "pulg" },
+    ],
+  },
+  {
+    kind: "slider",
+    group: "q2",
+    question: "¿Cuál es tu objetivo de peso?",
+    footnote: "¡En base a esto, ajustaremos la dosis ideal para los mejores resultados!",
+    units: [
+      { id: "kg", label: "kg", min: 40, max: 250, default: 70, step: 1, suffix: "kg" },
+      { id: "lb", label: "lb", min: 88, max: 550, default: 154, step: 1, suffix: "lb" },
+    ],
+  },
+  {
+    kind: "options",
+    group: "q2",
+    variant: "emoji",
+    columns: 1,
+    question: "¿Cómo impacta tu peso en tu vida hoy?",
+    options: [
+      { id: "fotos", emoji: "📷", label: "Evito tomarme fotos por vergüenza" },
+      { id: "pareja", emoji: "💔", label: "Mi pareja ya no me mira con deseo" },
+      { id: "confianza", emoji: "😞", label: "Me siento menos seguro(a)" },
+      { id: "social", emoji: "🚫", label: "Evito citas o situaciones sociales" },
+      { id: "energia", emoji: "⚡", label: "Afecta mi energía y disposición" },
+      { id: "ninguna", emoji: "✋", label: "Ninguna de estas" },
+    ],
+  },
+  {
+    kind: "options",
+    group: "q2",
+    variant: "emoji",
+    columns: 1,
+    question: "¿Estás realmente satisfecho(a) con tu apariencia?",
+    options: [
+      { id: "no", emoji: "😔", label: "No, me siento con sobrepeso" },
+      { id: "maisoumenos", emoji: "🤔", label: "Más o menos, sé que puedo mejorar" },
+      { id: "cambiar", emoji: "💪", label: "No, quiero cambiar mi cuerpo y mi confianza" },
+    ],
+  },
+  {
+    kind: "options",
+    group: "q2",
+    variant: "emoji",
+    columns: 1,
+    question: "¿Qué es lo que más te impide adelgazar hoy?",
+    options: [
+      { id: "tiempo", emoji: "⏰", label: "Falta de tiempo / rutina agitada" },
+      { id: "autocontrol", emoji: "🍕", label: "Falta de autocontrol" },
+      { id: "tudo", emoji: "😤", label: "Ya lo intenté todo y nada funciona" },
+      { id: "cara", emoji: "💰", label: "Alimentación cara o difícil" },
+    ],
+  },
+  {
+    kind: "options",
+    group: "q2",
+    variant: "emoji",
+    columns: 1,
+    question: "¿Cuántos litros de agua sueles beber al día?",
+    options: [
+      { id: "cafe", emoji: "☕", label: "Solo bebo café / poca agua" },
+      { id: "2l", emoji: "💧", label: "Hasta 2 litros" },
+      { id: "2a3l", emoji: "💦", label: "Entre 2 y 3 litros" },
+      { id: "mais3l", emoji: "🌊", label: "Más de 3 litros" },
+    ],
+  },
+  {
+    kind: "options",
+    group: "q2",
+    variant: "emoji",
+    columns: 1,
+    question: "¿Cuántas horas duermes por noche?",
+    options: [
+      { id: "menos5", emoji: "😫", label: "Menos de 5 horas" },
+      { id: "5a7", emoji: "😴", label: "Entre 5 y 7 horas" },
+      { id: "7a9", emoji: "😊", label: "Entre 7 y 9 horas" },
+      { id: "mais9", emoji: "😌", label: "Más de 9 horas" },
+    ],
+  },
+  {
+    kind: "options",
+    group: "q2",
+    variant: "emoji",
+    columns: 1,
+    question: "¿Cómo es tu rutina hoy?",
+    options: [
+      { id: "fora", emoji: "🏃", label: "Trabajo fuera y tengo una rutina agitada" },
+      { id: "sentado", emoji: "🪑", label: "Trabajo sentado(a) la mayor parte del día" },
+      { id: "estresse", emoji: "😰", label: "Mi rutina es estresante e irregular" },
+      { id: "mudou", emoji: "🔄", label: "Mi rutina cambió mucho en los últimos años" },
+    ],
+  },
+  {
+    kind: "options",
+    group: "q2",
+    variant: "emoji",
+    columns: 1,
+    question: "¿Cuál es el cuerpo que quieres alcanzar?",
+    options: [
+      { id: "emforma", emoji: "💪", label: "En forma", sublabel: "Cuerpo atlético y saludable" },
+      { id: "tonificado", emoji: "🏋️", label: "Tonificado", sublabel: "Cuerpo firme con definición" },
+    ],
+  },
+  {
+    kind: "name",
+    group: "q2",
+    question: "¿Cuál es tu nombre?",
+    subtitle:
+      "Usaremos tu nombre para armar tu protocolo personalizado del Mounjaro de Chía. 🧪",
+    placeholder: "Escribe tu nombre",
+    buttonLabel: "Continuar ➡️",
+  },
+
+  // ===== PÁGINA FINAL (VSL 2 + planes) =====
+  {
+    kind: "video",
+    variant: "final",
+    player: VIDEO.vsl2Player,
+    ctaLabel: "OBTENER MI PLAN",
+    ctaDelay: CTA_DELAY.vsl2,
+    finalHeadline: "✅ ¡Análisis completado con éxito!",
+    finalSubtitle:
+      "Ahora mira el video para descubrir cómo usar el Mounjaro de Chía para perder peso ya en los próximos 30 días…",
+    caption: "🔒 Mira hasta el final para recibir la receta…",
+    finalFormulaLabel: "Fórmula personalizada para",
+  },
+];
+
+// Índice del paso VSL1 y del paso final (para lógica de progreso/encabezado)
+export const VSL1_INDEX = STEPS.findIndex((s) => s.kind === "video" && s.variant === "vsl1");
+export const FINAL_INDEX = STEPS.findIndex((s) => s.kind === "video" && s.variant === "final");
