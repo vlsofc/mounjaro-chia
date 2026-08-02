@@ -35,14 +35,11 @@ export const VIDEO = {
 };
 
 // Segundos hasta liberar el botón (CTA) oculto sobre cada video.
-//   VSL 1: pitchTime del reproductor = 909 s (15 min 09 s).
-//   VSL 2: este reproductor AÚN NO tiene "pitchTime" configurado en ConverteAI,
-//          por eso no se pudo leer un valor real. Ajusta el número de abajo al
-//          "pitch" que definas para ese video (fallback temporal: 584 s).
-// Pon 0 para liberar el botón al instante durante las pruebas.
+// 0 = el botón queda liberado de inmediato (sin espera).
+// Para volver a ocultarlo hasta el "pitch" del video, pon aquí los segundos.
 export const CTA_DELAY = {
-  vsl1: 909,
-  vsl2: 584, // TODO: reemplazar por el pitchTime real de la VSL 2
+  vsl1: 0,
+  vsl2: 0,
 };
 
 // -----------------------------------------------------------------------------
