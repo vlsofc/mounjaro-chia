@@ -38,8 +38,8 @@ export const VIDEO = {
 // 0 = el botón queda liberado de inmediato (sin espera).
 // Para volver a ocultarlo hasta el "pitch" del video, pon aquí los segundos.
 export const CTA_DELAY = {
-  vsl1: 0,
-  vsl2: 0,
+  vsl1: 905, // 15 min 05 s
+  vsl2: 590, // 9 min 50 s
 };
 
 // -----------------------------------------------------------------------------
