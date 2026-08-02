@@ -48,8 +48,8 @@ export const CTA_DELAY = {
 //  (No se copian los del sitio de referencia para no enviarle tus ventas.)
 // -----------------------------------------------------------------------------
 export const CHECKOUT = {
-  completo: "#", // TODO: tu checkout del Plan Completo
-  premium: "#",  // TODO: tu checkout del Plan Premium
+  completo: "https://pay.hotmart.com/M105524681I?off=3zy067je", // Plan Completo - $9,90
+  premium: "https://pay.hotmart.com/M105524681I?off=yp0fcsmn",  // Plan Premium - $19,90
 };
 
 // -----------------------------------------------------------------------------
