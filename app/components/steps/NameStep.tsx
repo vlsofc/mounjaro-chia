@@ -31,7 +31,6 @@ export default function NameStep({
         onChange={(e) => setName(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleContinue()}
         placeholder={step.placeholder}
-        autoFocus
         className="w-full rounded-xl border-2 border-gray-200 px-4 py-3.5 text-center text-lg font-semibold text-chia-deep outline-none focus:border-chia-light transition"
       />
 

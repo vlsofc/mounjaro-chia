@@ -28,7 +28,9 @@ function QuizContent() {
           </div>
         )}
 
-        <div className="flex-1 flex flex-col">
+        {/* key={currentStep} fuerza remontar cada paso, evitando que el estado
+            local (p. ej. el valor del slider) se herede del paso anterior. */}
+        <div key={currentStep} className="flex-1 flex flex-col">
           {step.kind === "options" && (
             <OptionsStep step={step} index={currentStep} />
           )}
