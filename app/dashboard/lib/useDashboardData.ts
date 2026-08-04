@@ -9,9 +9,15 @@ export interface SessionRow {
   reached_sales: boolean | null;
   clicked_cta: boolean | null;
   utm_source: string | null;
+  utm_medium: string | null;
   utm_campaign: string | null;
   utm_content: string | null;
+  device: string | null;
+  user_agent: string | null;
 }
+
+const SESSION_COLS =
+  "id,created_at,max_step,reached_sales,clicked_cta,utm_source,utm_medium,utm_campaign,utm_content,device,user_agent";
 
 export interface EventRow {
   session_id: string;
@@ -72,7 +78,7 @@ export function useDashboardData(preset: Preset) {
       const s = await fetchAll<SessionRow>(async (a, b) => {
         let q = supabase!
           .from(TABLES.sessions)
-          .select("id,created_at,max_step,reached_sales,clicked_cta,utm_source,utm_campaign,utm_content")
+          .select(SESSION_COLS)
           .order("created_at", { ascending: false })
           .range(a, b);
         if (from) q = q.gte("created_at", from);
@@ -103,5 +109,24 @@ export function useDashboardData(preset: Preset) {
 
   useEffect(() => { load(); }, [load]);
 
-  return { loading, error, sessions, events, reload: load };
+  // Apaga sessões (e seus eventos, via cascade) por um campo específico.
+  // value === null => apaga onde a coluna está nula (ex.: "(directo)"/"(sem X)").
+  const removeBy = useCallback(
+    async (field: "utm_campaign" | "utm_medium" | "utm_content" | "device", value: string | null) => {
+      if (!supabase) return { ok: false, error: "Supabase no configurado." };
+      try {
+        let q = supabase.from(TABLES.sessions).delete();
+        q = value === null ? q.is(field, null) : q.eq(field, value);
+        const { error } = await q;
+        if (error) return { ok: false, error: error.message };
+        await load();
+        return { ok: true };
+      } catch (err) {
+        return { ok: false, error: err instanceof Error ? err.message : "Error al borrar." };
+      }
+    },
+    [load]
+  );
+
+  return { loading, error, sessions, events, reload: load, removeBy };
 }

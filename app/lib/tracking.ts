@@ -33,6 +33,14 @@ function getOrCreateAnonymousId() {
   return anonId;
 }
 
+function detectDevice(): "mobile" | "tablet" | "desktop" {
+  const ua = navigator.userAgent || "";
+  if (/iPad|Tablet|PlayBook|Silk|(Android(?!.*Mobile))/i.test(ua)) return "tablet";
+  if (/Mobi|Android|iPhone|iPod|IEMobile|BlackBerry|Opera Mini/i.test(ua))
+    return "mobile";
+  return "desktop";
+}
+
 function getUtmParams() {
   const params = new URLSearchParams(window.location.search);
   return {
@@ -71,6 +79,7 @@ export async function initSession(): Promise<string | null> {
         user_agent: navigator.userAgent,
         referrer: document.referrer || null,
         screen_width: window.innerWidth,
+        device: detectDevice(),
         funnel_version: FUNNEL_VERSION,
       };
 

@@ -21,6 +21,7 @@ create table if not exists mounjaro_sessions (
   user_agent      text,
   referrer        text,
   screen_width    integer,
+  device          text,            -- 'mobile' | 'tablet' | 'desktop'
   ab_variant      text,
   funnel_version  text,
   max_step        integer default 0,
@@ -45,6 +46,7 @@ create index if not exists idx_mounjaro_events_step    on mounjaro_funnel_events
 create index if not exists idx_mounjaro_sessions_created on mounjaro_sessions(created_at desc);
 create index if not exists idx_mounjaro_sessions_utm_source on mounjaro_sessions(utm_source);
 create index if not exists idx_mounjaro_sessions_utm_campaign on mounjaro_sessions(utm_campaign);
+create index if not exists idx_mounjaro_sessions_device on mounjaro_sessions(device);
 
 -- RLS: permitir insert/select anônimo (mesmo padrão dos outros funis) ----------
 alter table mounjaro_sessions enable row level security;
@@ -56,8 +58,12 @@ create policy "mounjaro sessions anon select" on mounjaro_sessions
   for select to anon using (true);
 create policy "mounjaro sessions anon update" on mounjaro_sessions
   for update to anon using (true) with check (true);
+create policy "mounjaro sessions anon delete" on mounjaro_sessions
+  for delete to anon using (true);
 
 create policy "mounjaro events anon insert" on mounjaro_funnel_events
   for insert to anon with check (true);
 create policy "mounjaro events anon select" on mounjaro_funnel_events
   for select to anon using (true);
+create policy "mounjaro events anon delete" on mounjaro_funnel_events
+  for delete to anon using (true);
