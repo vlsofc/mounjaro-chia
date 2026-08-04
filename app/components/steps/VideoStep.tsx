@@ -10,7 +10,7 @@ export default function VideoStep({
 }: {
   step: Extract<Step, { kind: "video" }>;
 }) {
-  const { nextStep, name } = useQuiz();
+  const { nextStep, name, trackCta } = useQuiz();
   const [revealed, setRevealed] = useState(step.ctaDelay <= 0);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function VideoStep({
           <p className="text-center text-lg font-black text-chia-deep mb-4">
             {step.finalFormulaLabel} {name || "ti"}
           </p>
-          <PlanCards cta={step.ctaLabel} />
+          <PlanCards cta={step.ctaLabel} onCheckout={(label) => trackCta(label)} />
         </div>
       )}
     </div>

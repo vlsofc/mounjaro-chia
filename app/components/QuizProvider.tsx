@@ -5,9 +5,17 @@ import {
   useState,
   useCallback,
   useMemo,
+  useEffect,
+  useRef,
   ReactNode,
 } from "react";
-import { STEPS, Gender } from "../lib/content";
+import { STEPS, Gender, stepType } from "../lib/content";
+import {
+  initSession,
+  bumpProgress,
+  logStepEvent,
+  trackCtaClick,
+} from "../lib/tracking";
 
 interface QuizContextType {
   currentStep: number;
@@ -21,6 +29,7 @@ interface QuizContextType {
   name: string;
   setName: (n: string) => void;
   progress: { index: number; total: number; percent: number } | null;
+  trackCta: (label?: string) => void;
 }
 
 const QuizContext = createContext<QuizContextType | null>(null);
@@ -75,6 +84,39 @@ export function QuizProvider({ children }: { children: ReactNode }) {
 
   const progress = useMemo(() => computeProgress(currentStep), [currentStep]);
 
+  // ── Tracking (Supabase) ──────────────────────────────────────────────────
+  // Al llegar a un paso subimos max_step (retención exacta). Al salir de un
+  // paso registramos su evento con el tiempo que el usuario estuvo en él.
+  const initedRef = useRef(false);
+  const enteredAtRef = useRef(0);
+  const prevStepRef = useRef(0);
+
+  useEffect(() => {
+    const now = Date.now();
+    const arrived = currentStep;
+
+    if (!initedRef.current) {
+      initedRef.current = true;
+      initSession().then(() => bumpProgress(arrived, stepType(arrived)));
+      prevStepRef.current = arrived;
+      enteredAtRef.current = now;
+      return;
+    }
+
+    const left = prevStepRef.current;
+    // solo registramos el evento del paso que se dejó al AVANZAR (no al volver).
+    if (arrived > left) {
+      logStepEvent(left, stepType(left), now - enteredAtRef.current);
+    }
+    bumpProgress(arrived, stepType(arrived));
+    prevStepRef.current = arrived;
+    enteredAtRef.current = now;
+  }, [currentStep]);
+
+  const trackCta = useCallback((label = "checkout") => {
+    trackCtaClick(label);
+  }, []);
+
   return (
     <QuizContext.Provider
       value={{
@@ -89,6 +131,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
         name,
         setName,
         progress,
+        trackCta,
       }}
     >
       {children}

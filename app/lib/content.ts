@@ -342,3 +342,60 @@ export const STEPS: Step[] = [
 // Índice del paso VSL1 y del paso final (para lógica de progreso/encabezado)
 export const VSL1_INDEX = STEPS.findIndex((s) => s.kind === "video" && s.variant === "vsl1");
 export const FINAL_INDEX = STEPS.findIndex((s) => s.kind === "video" && s.variant === "final");
+
+// -----------------------------------------------------------------------------
+//  Metadatos de pasos (para tracking y dashboard)
+// -----------------------------------------------------------------------------
+export type StepPhase = "quiz1" | "vsl1" | "quiz2" | "sales";
+
+// step_type usado en el tracking (mismo criterio que ayuno-metabolico).
+export function stepType(i: number): string {
+  const s = STEPS[i];
+  if (!s) return "unknown";
+  if (s.kind === "options")
+    return s.variant === "gender"
+      ? "gender"
+      : s.variant === "image"
+      ? "image-options"
+      : "options";
+  if (s.kind === "slider") return "slider";
+  if (s.kind === "name") return "name";
+  if (s.kind === "video") return s.variant === "final" ? "sales-page" : "video";
+  return "unknown";
+}
+
+// Etiqueta legible + fase de cada paso (para el dashboard).
+export const STEP_META: { label: string; phase: StepPhase }[] = [
+  { label: "Kilos a perder", phase: "quiz1" },
+  { label: "Género", phase: "quiz1" },
+  { label: "Edad", phase: "quiz1" },
+  { label: "Cuerpo actual", phase: "quiz1" },
+  { label: "Zona a reducir", phase: "quiz1" },
+  { label: "VSL 1 (video)", phase: "vsl1" },
+  { label: "Peso actual", phase: "quiz2" },
+  { label: "Altura", phase: "quiz2" },
+  { label: "Objetivo de peso", phase: "quiz2" },
+  { label: "Impacto del peso", phase: "quiz2" },
+  { label: "Satisfacción", phase: "quiz2" },
+  { label: "Qué te impide adelgazar", phase: "quiz2" },
+  { label: "Agua por día", phase: "quiz2" },
+  { label: "Horas de sueño", phase: "quiz2" },
+  { label: "Rutina", phase: "quiz2" },
+  { label: "Cuerpo deseado", phase: "quiz2" },
+  { label: "Nombre", phase: "quiz2" },
+  { label: "Página de ventas (VSL 2)", phase: "sales" },
+];
+
+export const PHASE_LABELS: Record<StepPhase, string> = {
+  quiz1: "Quiz 1",
+  vsl1: "VSL 1",
+  quiz2: "Quiz 2",
+  sales: "Ventas",
+};
+
+export const PHASE_COLORS: Record<StepPhase, string> = {
+  quiz1: "#4d9900",
+  vsl1: "#eab308",
+  quiz2: "#0ea5e9",
+  sales: "#16a34a",
+};
