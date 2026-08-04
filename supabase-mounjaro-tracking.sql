@@ -40,6 +40,15 @@ create table if not exists mounjaro_funnel_events (
   created_at   timestamptz not null default now()
 );
 
+-- Colunas idempotentes (caso a tabela já tenha sido criada numa execução
+-- anterior sem essas colunas — evita "column does not exist") ------------------
+alter table mounjaro_sessions add column if not exists device         text;
+alter table mounjaro_sessions add column if not exists utm_medium     text;
+alter table mounjaro_sessions add column if not exists utm_content    text;
+alter table mounjaro_sessions add column if not exists utm_term       text;
+alter table mounjaro_sessions add column if not exists ab_variant     text;
+alter table mounjaro_sessions add column if not exists funnel_version text;
+
 -- Índices ----------------------------------------------------------------------
 create index if not exists idx_mounjaro_events_session on mounjaro_funnel_events(session_id);
 create index if not exists idx_mounjaro_events_step    on mounjaro_funnel_events(step);
@@ -52,18 +61,25 @@ create index if not exists idx_mounjaro_sessions_device on mounjaro_sessions(dev
 alter table mounjaro_sessions enable row level security;
 alter table mounjaro_funnel_events enable row level security;
 
+drop policy if exists "mounjaro sessions anon insert" on mounjaro_sessions;
 create policy "mounjaro sessions anon insert" on mounjaro_sessions
   for insert to anon with check (true);
+drop policy if exists "mounjaro sessions anon select" on mounjaro_sessions;
 create policy "mounjaro sessions anon select" on mounjaro_sessions
   for select to anon using (true);
+drop policy if exists "mounjaro sessions anon update" on mounjaro_sessions;
 create policy "mounjaro sessions anon update" on mounjaro_sessions
   for update to anon using (true) with check (true);
+drop policy if exists "mounjaro sessions anon delete" on mounjaro_sessions;
 create policy "mounjaro sessions anon delete" on mounjaro_sessions
   for delete to anon using (true);
 
+drop policy if exists "mounjaro events anon insert" on mounjaro_funnel_events;
 create policy "mounjaro events anon insert" on mounjaro_funnel_events
   for insert to anon with check (true);
+drop policy if exists "mounjaro events anon select" on mounjaro_funnel_events;
 create policy "mounjaro events anon select" on mounjaro_funnel_events
   for select to anon using (true);
+drop policy if exists "mounjaro events anon delete" on mounjaro_funnel_events;
 create policy "mounjaro events anon delete" on mounjaro_funnel_events
   for delete to anon using (true);
