@@ -30,8 +30,8 @@ export const IMAGES = {
 // -----------------------------------------------------------------------------
 export const VIDEO = {
   account: "a977b5e6-a7d9-43df-9bd2-c815069210f9",
-  vsl1Player: "6a6d87cb1c982c86efa0dfbf",
-  vsl2Player: "6a6ec2c2b6e0b7d03f6871b8",
+  vsl1Player: "6a7e186902f23c0054a7addc",
+  vsl2Player: "6a7e182af58befd718ab52fe",
 };
 
 // Segundos hasta liberar el botón (CTA) oculto sobre cada video.
