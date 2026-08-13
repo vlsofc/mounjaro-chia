@@ -13,9 +13,9 @@ export default function TestePage() {
       <div className="w-full max-w-md mx-auto px-4 py-6 flex flex-col items-center gap-6">
         <Image
           src="/logo.png"
-          alt="Mounjaro de Chía"
+          alt="Gelatina de Chía"
           width={120}
-          height={80}
+          height={90}
           priority
           className="h-auto w-[120px]"
         />
