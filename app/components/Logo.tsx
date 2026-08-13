@@ -6,10 +6,10 @@ export default function Logo() {
       <Image
         src="/logo.png"
         alt="Gelatina de Chía"
-        width={130}
-        height={97}
+        width={160}
+        height={70}
         priority
-        className="h-auto w-[120px]"
+        className="h-auto w-[160px]"
       />
     </div>
   );

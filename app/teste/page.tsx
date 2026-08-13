@@ -14,10 +14,10 @@ export default function TestePage() {
         <Image
           src="/logo.png"
           alt="Gelatina de Chía"
-          width={120}
-          height={90}
+          width={160}
+          height={70}
           priority
-          className="h-auto w-[120px]"
+          className="h-auto w-[160px]"
         />
 
         <VideoPlayer account={VIDEO.account} player={VIDEO.vsl2Player} />
