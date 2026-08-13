@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import { useQuiz } from "../QuizProvider";
 import { Step, VIDEO } from "../../lib/content";
 import VideoPlayer from "../VideoPlayer";
-import PlanCards from "../PlanCards";
 
 export default function VideoStep({
   step,
 }: {
   step: Extract<Step, { kind: "video" }>;
 }) {
-  const { nextStep, name, trackCta } = useQuiz();
+  const { nextStep } = useQuiz();
   const [revealed, setRevealed] = useState(step.ctaDelay <= 0);
 
   useEffect(() => {
@@ -43,8 +42,8 @@ export default function VideoStep({
 
       <VideoPlayer account={VIDEO.account} player={step.player} />
 
-      {/* Aviso de bloqueo mientras el CTA está oculto (solo página final) */}
-      {isFinal && !revealed && (
+      {/* Página final: el CTA lo renderiza el propio Vturb dentro del video */}
+      {isFinal && (
         <p className="text-center text-sm font-semibold text-gray-500">
           {step.caption}
         </p>
@@ -56,15 +55,6 @@ export default function VideoStep({
           <button onClick={nextStep} className="btn-primary w-full cta-pulse">
             {step.ctaLabel}
           </button>
-        </div>
-      )}
-
-      {isFinal && revealed && (
-        <div className="cta-gate w-full animate-fade-in-up">
-          <p className="text-center text-lg font-black text-chia-deep mb-4">
-            {step.finalFormulaLabel} {name || "ti"}
-          </p>
-          <PlanCards cta={step.ctaLabel} onCheckout={(label) => trackCta(label)} />
         </div>
       )}
     </div>
