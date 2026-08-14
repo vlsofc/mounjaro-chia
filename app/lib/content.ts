@@ -1,5 +1,5 @@
 // =============================================================================
-//  Gelatina de Chía — contenido del funnel (traducido al español)
+//  Mounjaro de Chía — contenido del funnel (traducido al español)
 //  Estructura fiel al funnel de referencia:
 //    Quiz 1 (5 pasos) -> VSL 1 (video con CTA oculto)
 //    -> Quiz 2 (11 pasos) -> Página final (VSL 2 + 2 planes)
@@ -30,8 +30,8 @@ export const IMAGES = {
 // -----------------------------------------------------------------------------
 export const VIDEO = {
   account: "a977b5e6-a7d9-43df-9bd2-c815069210f9",
-  vsl1Player: "6a7e186902f23c0054a7addc",
-  vsl2Player: "6a7e182af58befd718ab52fe",
+  vsl1Player: "6a6d87cb1c982c86efa0dfbf",
+  vsl2Player: "6a6ec2c2b6e0b7d03f6871b8",
 };
 
 // Segundos hasta liberar el botón (CTA) oculto sobre cada video.
@@ -121,7 +121,7 @@ export const STEPS: Step[] = [
     group: "q1",
     variant: "emoji",
     columns: 1,
-    question: "¿Cuántos kilos quieres perder con la Gelatina de Chía?",
+    question: "¿Cuántos kilos quieres perder con el Mounjaro de Chía?",
     options: [
       { id: "ate5", emoji: "🎯", label: "Hasta 5 kg" },
       { id: "6a10", emoji: "💪", label: "6 a 10 kg" },
@@ -137,7 +137,7 @@ export const STEPS: Step[] = [
     columns: 2,
     question: "¿Cuál es tu género?",
     subtitle:
-      "Esta información nos ayuda a ajustar tu protocolo de la Gelatina de Chía según tu metabolismo.",
+      "Esta información nos ayuda a ajustar tu protocolo del Mounjaro de Chía según tu metabolismo.",
     options: [
       { id: "male", label: "Hombre", img: { male: IMAGES.body.regular.male, female: IMAGES.body.regular.male } },
       { id: "female", label: "Mujer", img: { male: IMAGES.body.regular.female, female: IMAGES.body.regular.female } },
@@ -319,7 +319,7 @@ export const STEPS: Step[] = [
     group: "q2",
     question: "¿Cuál es tu nombre?",
     subtitle:
-      "Usaremos tu nombre para armar tu protocolo personalizado de la Gelatina de Chía. 🧪",
+      "Usaremos tu nombre para armar tu protocolo personalizado del Mounjaro de Chía. 🧪",
     placeholder: "Escribe tu nombre",
     buttonLabel: "Continuar ➡️",
   },
@@ -333,7 +333,7 @@ export const STEPS: Step[] = [
     ctaDelay: CTA_DELAY.vsl2,
     finalHeadline: "✅ ¡Análisis completado con éxito!",
     finalSubtitle:
-      "Ahora mira el video para descubrir cómo usar la Gelatina de Chía para perder peso ya en los próximos 30 días…",
+      "Ahora mira el video para descubrir cómo usar el Mounjaro de Chía para perder peso ya en los próximos 30 días…",
     caption: "🔒 Mira hasta el final para recibir la receta…",
     finalFormulaLabel: "Fórmula personalizada para",
   },

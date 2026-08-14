@@ -1,4 +1,4 @@
-# Gelatina de Chía — Quiz (ES)
+# Mounjaro de Chía — Quiz (ES)
 
 Réplica en español del funnel de quiz de `mounajrodechia.online`, construida con Next.js 14 + Tailwind.
 Todos los textos fueron traducidos del portugués al español y se reutilizan exactamente las mismas

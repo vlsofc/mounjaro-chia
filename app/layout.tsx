@@ -16,8 +16,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Gelatina de Chía - Protocolo de la Gelatina de Chía",
-  description: "Descubre tu protocolo personalizado de la Gelatina de Chía.",
+  title: "Mounjaro de Chía - Protocolo del Mounjaro de Chía",
+  description: "Descubre tu protocolo personalizado del Mounjaro de Chía.",
 };
 
 // TODO: reemplaza con tu propio ID de Facebook Pixel antes de publicar.

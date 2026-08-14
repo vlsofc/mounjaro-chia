@@ -12,12 +12,12 @@ interface Plan {
 const PLANS: Plan[] = [
   {
     img: "/plan-completo.png",
-    alt: "Gelatina de Chía — Plan Completo",
+    alt: "Mounjaro de Chía — Plan Completo",
     href: CHECKOUT.completo,
   },
   {
     img: "/plan-premium.png",
-    alt: "Gelatina de Chía — Plan Premium Completo",
+    alt: "Mounjaro de Chía — Plan Premium Completo",
     href: CHECKOUT.premium,
     premium: true,
   },

@@ -5,11 +5,11 @@ export default function Logo() {
     <div className="flex justify-center py-3">
       <Image
         src="/logo.png"
-        alt="Gelatina de Chía"
-        width={160}
-        height={70}
+        alt="Mounjaro de Chía"
+        width={130}
+        height={86}
         priority
-        className="h-auto w-[160px]"
+        className="h-auto w-[120px]"
       />
     </div>
   );
