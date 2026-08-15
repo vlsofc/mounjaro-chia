@@ -91,8 +91,8 @@ export default function DownsellPage() {
         {/* Nota discreta: nombre oficial del producto en Hotmart */}
         <p style={styles.note}>
           En tu pedido y en el comprobante de Hotmart, el Cortisol Cero aparece
-          con su nombre oficial: &ldquo;Ativação Natural&rdquo; (Activación
-          Natural). Es el mismo protocolo completo.
+          con su nombre oficial: &ldquo;Activación Natural&rdquo;. Es el mismo
+          protocolo completo.
         </p>
 
         {/* Advertencia final */}
