@@ -6,7 +6,7 @@ import { VIDEO } from "../lib/content";
 // Página de UPSELL (post-compra) — réplica del funnel del ayuno metabólico.
 // Video VTurb + widget de checkout Hotmart revelado tras el pitch.
 const UPSELL_PLAYER = "6a804b4a43558ce36c3a0b30";
-const WIDGET_DELAY = 305; // 5 min 05 s hasta revelar el widget de Hotmart
+const WIDGET_DELAY = 356; // 5 min 56 s hasta revelar el widget de Hotmart
 
 export default function UpsellPage() {
   const [showWidget, setShowWidget] = useState(WIDGET_DELAY <= 0);
